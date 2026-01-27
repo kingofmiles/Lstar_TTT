@@ -20,3 +20,12 @@ Negative Sequences.
 Any sequence is immediately labeled as negative if any API call in the sequence returns a JSON-RPC error or fails to produce a valid response.
 
 Thus, the target language consists of all API call sequences that, starting from the initial state, terminate without error and result in a complete account snapshot.
+
+ALPHABET：
+Let Σ = {bal, nonce, code}.
+
+A word w ∈ Σ* is accepted iff:
+
+1. All API calls in w return successful JSON-RPC responses (no error).
+2. w contains exactly one occurrence of each symbol in Σ.
+3. The order constraint holds: nonce ≺ bal ≺ code.
