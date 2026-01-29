@@ -13,12 +13,9 @@ TEMPLATES = [
 ]
 
 def equivalence_oracle(hypothesis):
-    # 先跑模板（高命中率）
     for seq in TEMPLATES:
         if hypothesis.accepts(seq) != membership_oracle(seq):
             return seq
-
-    # 再补一点随机
     for _ in range(400):
         length = random.randint(1, 10)
         seq = "".join(random.choice(ALPHABET) for _ in range(length))
