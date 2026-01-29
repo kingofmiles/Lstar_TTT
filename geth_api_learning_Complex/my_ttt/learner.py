@@ -108,9 +108,9 @@ class TTTLearner:
     # ---------- refinement ----------
     def refine(self, ce):
         """
-        강화된 refine:
-        1) 先尝试 1-step discriminator [a]
-        2) 如果失败，尝试用 counterexample 的后缀 ce[i:] 作为 discriminator（更强）
+        refine:
+        1) Frist, check 1-step discriminator [a]
+        2) If that fails, try using the suffix ce[i:] of counterexample as the discriminator (which is stronger).
         """
         ce = self._to_list(ce)
 
