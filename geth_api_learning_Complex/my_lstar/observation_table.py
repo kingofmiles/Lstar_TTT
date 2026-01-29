@@ -10,7 +10,7 @@ class ObservationTable:
         return self._T[p][s]
 
     def state(self, p):
-        """返回一行的 tuple，用作 DFA 状态标识"""
+        """return a row of tuple，marking the state of DFA"""
         return tuple(self.cell(p, s) for s in self.S)
 
     # ---------- initialization ----------
@@ -79,17 +79,17 @@ class ObservationTable:
             "transitions": {state: {symbol: next_state}}
         }
         """
-        # 每个 row 的状态用 tuple 表示
-        states_map = {}  # tuple(row) -> p 代表状态名字
+        # Using tuples describe states
+        states_map = {}  # tuple(row) -> p state
         for p in self.P:
             st = self.state(p)
             if st not in states_map:
-                states_map[st] = p  # 用前缀 p 作为状态标识
+                states_map[st] = p  # marking state
 
         states = list(states_map.keys())
         start_state = self.state('')
 
-        # 接受状态
+        # accept state
         accepting = [st for st, p in states_map.items() if self.cell(p, '') == 1]
 
         # transitions
