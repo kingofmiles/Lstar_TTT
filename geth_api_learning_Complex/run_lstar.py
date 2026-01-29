@@ -12,8 +12,8 @@ end = time.time()
 lstar_time = end - start
 lstar_requests = API_CALL_COUNT
 
-print(f"L* 用时: {lstar_time:.2f}s, 请求次数: {lstar_requests()}")
-# 可视化或打印 DFA
+print(f"L* Time: {lstar_time:.2f}s, Frequency: {lstar_requests()}")
+# visualization and print DFA
 print(dfa)
-dfa.visualize("dfa_lstar")  # 如果你的实现有 visualize 方法
+dfa.visualize("dfa_lstar")
 
