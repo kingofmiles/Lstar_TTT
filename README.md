@@ -27,11 +27,11 @@ A sequence is accepted if and only if:
 
   4.Execution reaches a complete account snapshot state, consisting of:
 
-    ·account balance,
+  ·account balance,
 
-    ·transaction count (nonce),
+  ·transaction count (nonce),
 
-    ·contract bytecode.
+  ·contract bytecode.
 
 Any sequence is rejected immediately once an API call returns an error response.
 
@@ -41,42 +41,42 @@ Let Σ be a finite alphabet of abstract API symbols, where each symbol correspon
 
 Example (simplified):
 
-```ALPHABET = ["A", "T", "B", "C", "M"]```
+    ALPHABET = ["A", "T", "B", "C", "M"]
 
 
 Each symbol is mapped to a JSON-RPC call in api_alphabet.py.
 
-Learning Setup
+## Learning Setup
 
-Membership Oracle
+### Membership Oracle
 Executes API sequences against a live Fantom JSON-RPC endpoint and returns accept/reject based on runtime behavior.
 
-Equivalence Oracle
+### Equivalence Oracle
 Implements randomized testing to search for counterexamples between the learned DFA and the real system.
 
-Learners
+### Learners
 
-my_lstar/ — classical L* implementation
+  ·my_lstar/ — classical L* implementation
 
-my_ttt/ — TTT implementation
+  ·my_ttt/ — TTT implementation
 
-Experiments
+## Experiments
 
 We evaluate learners under different target language complexities:
 
-Simple language (small alphabet, few states)
+·Simple language (small alphabet, few states)
 
-Complex language (larger alphabet, non-trivial ordering constraints)
+·Complex language (larger alphabet, non-trivial ordering constraints)
 
 Metrics recorded:
 
-Number of DFA states
+·Number of DFA states
 
-Number of membership queries
+·Number of membership queries
 
-Total learning time
+·Total learning time
 
-Results (Summary)
+## Results (Summary)
 
 For simple target languages, L* may converge faster due to low table complexity.
 
@@ -84,14 +84,15 @@ For more complex languages, TTT typically scales better and avoids table blow-up
 
 Both learners successfully infer meaningful DFA specifications.
 
-Repository Structure
-.
-├── api_alphabet.py
-├── oracle.py
-├── equivalence.py
-├── compare.py
-├── run_lstar.py
-├── run_ttt.py
-├── my_lstar/
-├── my_ttt/
-└── dfa_*.pdf
+## Repository Structure
+    .
+    ├── api_alphabet.py
+    ├── oracle.py
+    ├── equivalence.py
+    ├── compare.py
+    ├── run_lstar.py
+    ├── run_ttt.py
+    ├── my_lstar/
+    ├── my_ttt/
+    ├── dfa_lstar.pdf
+    └── dfa_ttt.pdf
