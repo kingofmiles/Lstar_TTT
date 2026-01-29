@@ -18,6 +18,6 @@ dfa = learner.learn()
 end = time.time()
 ttt_time = end - start
 ttt_requests = API_CALL_COUNT
-print(f"TTT 用时: {ttt_time:.2f}s, 请求次数: {ttt_requests()}")
+print(f"TTT Time: {ttt_time:.2f}s, Frequency: {ttt_requests()}")
 print(dfa)
 dfa.visualize("dfa_ttt")
