@@ -97,7 +97,7 @@ class LStar:
         self.table = ObservationTable(self.alphabet)
 
     def learn(self):
-        # 初始化观察表
+        # Initialization
         self.table.init_table(self.mq)
 
         while True:
@@ -112,10 +112,9 @@ class LStar:
                 if not is_consistent:
                     self.table.add_suffix(s, self.mq)
 
-            # 生成假设 DFA
+            # Generate DFA
             hypothesis_dict = self.table.to_dfa()
 
-            # 封装成 DFA 对象
             hypothesis = DFA(
                 states=hypothesis_dict["states"],
                 transitions=hypothesis_dict["transitions"],
@@ -123,13 +122,13 @@ class LStar:
                 accepting=hypothesis_dict["accepting"]
             )
 
-            # 调用 equivalence oracle 获取反例
+            # Get counterexample
             counterexample = self.eq(hypothesis)
 
             if counterexample is None:
-                # 没有反例，学习完成
+                # all good, Finish
                 return hypothesis
 
-            # 如果有反例，更新观察表
+            # Find counterexample
             self.table.add_counterexample(counterexample, self.mq)
 
