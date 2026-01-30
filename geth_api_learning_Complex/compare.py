@@ -64,14 +64,14 @@ requests = [lstar_requests, ttt_requests]
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 
 # Left: Execution time
-axes[0].bar(labels, times, color=["skyblue", "lightgreen"])
+bars_time = axes[0].bar(labels, times, color=["skyblue", "lightgreen"])
 axes[0].set_title("Execution Time (S)")
 axes[0].set_ylabel("Second")
 add_bar_labels(axes[0], bars_time,fmt="{:.2f}")
 
 
 # Right：Frequency
-axes[1].bar(labels, requests, color=["skyblue", "lightgreen"])
+bars_req = axes[1].bar(labels, requests, color=["skyblue", "lightgreen"])
 axes[1].set_title("Membership Request Account")
 axes[1].set_ylabel("Times")
 add_bar_labels(axes[1], bars_req, fmt="{:d}")
