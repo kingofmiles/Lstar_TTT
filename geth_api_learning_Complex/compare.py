@@ -3,12 +3,12 @@ import time
 import matplotlib.pyplot as plt
 from my_lstar.learner import LStar
 from my_ttt.learner import TTTLearner
-from oracle import membership_oracle, reset_counter, API_CALL_COUNT
+from oracle import membership_oracle, reset_counter, API_CALL_COUNT, RPC_CALL_COUNT
 from equivalence import equivalence_oracle
 from api_alphabet import ALPHABET
 
-#visualization--add number
-def add_bar_labels(ax, bars, fmt="{:.2f}", y_pad_ratio=-0.07):
+#visualization--add number--fontsize is uesd to change the size
+def add_bar_labels(ax, bars, fmt="{:.2f}", y_pad_ratio=-0.15):
     """
     - fmt: Format， "{:.2f}" or "{:d}"
     - y_pad_ratio: gap between number and column
@@ -25,7 +25,7 @@ def add_bar_labels(ax, bars, fmt="{:.2f}", y_pad_ratio=-0.07):
             x, h + pad,
             fmt.format(h),
             ha="center", va="bottom",
-            fontsize=10
+            fontsize=20
         )
 
 # -------------------------------
@@ -38,8 +38,10 @@ lstar_dfa = lstar_learner.learn()
 end = time.time()
 lstar_time = end - start
 lstar_requests = API_CALL_COUNT()
+lstar_rpc = RPC_CALL_COUNT()
 
-print(f"L* Time: {lstar_time:.2f}s, frequency: {lstar_requests}")
+
+print(f"L* Time: {lstar_time:.2f}s, frequency: {lstar_requests}, RPC: {lstar_rpc}")
 
 # -------------------------------
 # TTT and recording
@@ -51,8 +53,9 @@ ttt_dfa = ttt_learner.learn()
 end = time.time()
 ttt_time = end - start
 ttt_requests = API_CALL_COUNT()
+ttt_rpc = RPC_CALL_COUNT()
 
-print(f"TTT time: {ttt_time:.2f}s, frequency: {ttt_requests}")
+print(f"TTT time: {ttt_time:.2f}s, frequency: {ttt_requests}, RPC: {ttt_rpc}")
 
 # -------------------------------
 # Compare
@@ -61,20 +64,26 @@ labels = ["L*", "TTT"]
 times = [lstar_time, ttt_time]
 requests = [lstar_requests, ttt_requests]
 
-fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+fig, axes = plt.subplots(1, 3, figsize=(15, 4)) #change the size
 
 # Left: Execution time
-bars_time = axes[0].bar(labels, times, color=["skyblue", "lightgreen"])
+bars_time = axes[0].bar(labels, times, color=["skyblue", "red"])
 axes[0].set_title("Execution Time (S)")
 axes[0].set_ylabel("Second")
 add_bar_labels(axes[0], bars_time,fmt="{:.2f}")
 
 
-# Right：Frequency
+# Medium：Frequency
 bars_req = axes[1].bar(labels, requests, color=["skyblue", "lightgreen"])
 axes[1].set_title("Membership Request Account")
 axes[1].set_ylabel("Times")
 add_bar_labels(axes[1], bars_req, fmt="{:d}")
+
+# Right: RPC
+bars_rpc = axes[2].bar(labels, rpc_requests, color=["skyblue", "yellow"])
+axes[2].set_title("JSON-RPC Calls")
+axes[2].set_ylabel("Calls")
+add_bar_labels(axes[2], bars_rpc, fmt="{:d}")
 
 
 plt.tight_layout()
