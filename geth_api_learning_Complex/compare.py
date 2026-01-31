@@ -1,9 +1,23 @@
 # compare.py
+import sys  
+if len(sys.argv) > 1:
+    Experiment_method = sys.argv[1] 
+else:
+    Experiment_method = 'complex' #default is complex
+
+#Experiment_method = simple/medium/complex
+if Experiment_method == 'complex':
+        from oracle import membership_oracle, reset_counter, API_CALL_COUNT, RPC_CALL_COUNT
+elif Experiment_method == 'simple':
+        from oracle_simple import membership_oracle, reset_counter, API_CALL_COUNT, RPC_CALL_COUNT
+elif Experiment_method == 'medium':
+        from oracle_medium import membership_oracle, reset_counter, API_CALL_COUNT, RPC_CALL_COUNT
+else:
+        raise ValueError(f"Unknown method: {Experiment_method}. Choose simple, medium, or complex.")
 import time
 import matplotlib.pyplot as plt
 from my_lstar.learner import LStar
 from my_ttt.learner import TTTLearner
-from oracle import membership_oracle, reset_counter, API_CALL_COUNT, RPC_CALL_COUNT
 from equivalence import equivalence_oracle
 from api_alphabet import ALPHABET
 
