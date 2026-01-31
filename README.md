@@ -85,7 +85,7 @@ For more complex languages, TTT typically scales better and avoids table blow-up
 Both learners successfully infer meaningful DFA specifications.
 
 ## Repository Structure
-    .
+    get_api_learning_Complex
     ├── api_alphabet.py
     ├── oracle.py
     ├── equivalence.py
