@@ -6,11 +6,13 @@ RPC_URL = "http://127.0.0.1:8545"
 
 class Oracle:
     def __init__(self):
-        self.API_CALL_COUNT = 0          # count MQ cache-misses
-        self.cache = {}                  # sequence(tuple) -> bool
+        self.API_CALL_COUNT = 0      # Membership Query count
+        self.RPC_CALL_COUNT = 0      # Actual JSON-RPC calls
+        self.cache = {}              # sequence(tuple) -> bool
 
     def reset_counter(self):
         self.API_CALL_COUNT = 0
+        self.RPC_CALL_COUNT = 0
         self.cache.clear()
 
     def membership_oracle(self, sequence):
@@ -21,12 +23,13 @@ class Oracle:
         if key in self.cache:
             return self.cache[key]
 
+        # ---- MQ count ----
         self.API_CALL_COUNT += 1
-        # print("[Oracle] seq =", sequence)
 
         phase = 0  # 0 none, 1 have A, 2 have A+T, 3 have A+T+B (accept)
 
         for sym in sequence:
+            # ---- language semantics ----
             if sym == "M":
                 self.cache[key] = False
                 return False
@@ -57,6 +60,7 @@ class Oracle:
             else:
                 raise ValueError(f"Unknown symbol: {sym}")
 
+            # ---- RPC call  ----
             payload = {
                 "jsonrpc": "2.0",
                 "method": API_MAP[sym]["method"],
@@ -65,6 +69,7 @@ class Oracle:
             }
 
             try:
+                self.RPC_CALL_COUNT += 1
                 r = requests.post(RPC_URL, json=payload, timeout=3)
                 resp = r.json()
             except Exception:
@@ -79,10 +84,17 @@ class Oracle:
         self.cache[key] = result
         return result
 
-    def get_count(self):
+    # -------- getters --------
+    def get_mq_count(self):
         return self.API_CALL_COUNT
 
+    def get_rpc_count(self):
+        return self.RPC_CALL_COUNT
+
+
+# ---- singleton exports  ----
 oracle = Oracle()
 membership_oracle = oracle.membership_oracle
 reset_counter = oracle.reset_counter
-API_CALL_COUNT = oracle.get_count
+API_CALL_COUNT = oracle.get_mq_count
+RPC_CALL_COUNT = oracle.get_rpc_count
