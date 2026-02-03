@@ -34,7 +34,7 @@ from api_alphabet import ALPHABET
 # IMPORTANT: monkey-patch equivalence.py without editing it
 # -------------------------------
 import equivalence as eq
-eq.membership_oracle = membership_oracle  # ✅ redirect to current mode oracle
+eq.membership_oracle = membership_oracle  # redirect to current mode oracle
 
 # -------------------------------
 # visualization helper
@@ -54,24 +54,24 @@ def add_bar_labels(ax, bars, fmt="{:.2f}", y_pad_ratio=-0.15):
 # -------------------------------
 reset_counter()
 start = time.time()
-lstar_learner = LStar(ALPHABET, membership_oracle, eq.equivalence_oracle)  # ✅ function, not module
+lstar_learner = LStar(ALPHABET, membership_oracle, eq.equivalence_oracle)  # function, not module
 lstar_dfa = lstar_learner.learn()
 lstar_time = time.time() - start
 lstar_requests = API_CALL_COUNT()
 lstar_rpc = RPC_CALL_COUNT()
-print(f"L* 用时: {lstar_time:.2f}s, 请求次数: {lstar_requests}, RPC: {lstar_rpc}")
+print(f"L* time: {lstar_time:.2f}s, Request: {lstar_requests}, RPC: {lstar_rpc}")
 
 # -------------------------------
 # run TTT
 # -------------------------------
 reset_counter()
 start = time.time()
-ttt_learner = TTTLearner(ALPHABET, membership_oracle, eq.equivalence_oracle)  # ✅ function
+ttt_learner = TTTLearner(ALPHABET, membership_oracle, eq.equivalence_oracle)  # function
 ttt_dfa = ttt_learner.learn()
 ttt_time = time.time() - start
 ttt_requests = API_CALL_COUNT()
 ttt_rpc = RPC_CALL_COUNT()
-print(f"TTT 用时: {ttt_time:.2f}s, 请求次数: {ttt_requests}, RPC: {ttt_rpc}")
+print(f"TTT Time: {ttt_time:.2f}s, Request: {ttt_requests}, RPC: {ttt_rpc}")
 
 # -------------------------------
 # plot comparison (3 columns)
