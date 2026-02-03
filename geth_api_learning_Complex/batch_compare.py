@@ -15,7 +15,6 @@ from my_lstar.learner import LStar
 from my_ttt.learner import TTTLearner
 from api_alphabet import ALPHABET
 
-# We will NOT edit equivalence.py. We'll monkey-patch it at runtime.
 import equivalence as eq
 
 
@@ -41,9 +40,7 @@ class RunResult:
     error: str = ""
 
 
-# -------------------------------
-# Timeout runner (Unix only, but you're on Ubuntu VM)
-# -------------------------------
+
 def run_with_timeout(fn, timeout_s: int):
     """
     Run fn() with a hard timeout. Returns (status, value_or_errstr).
@@ -86,8 +83,7 @@ def run_once(mode: str, algo: str, timeout_s: int, seed: int, num_tests: int, ma
     reset_counter = getattr(omod, "reset_counter")
     API_CALL_COUNT = getattr(omod, "API_CALL_COUNT")
     RPC_CALL_COUNT = getattr(omod, "RPC_CALL_COUNT")
-
-    # monkey-patch equivalence.py to use THIS mode's membership_oracle
+    
     eq.membership_oracle = membership_oracle
 
     # reset counts + cache
@@ -95,7 +91,6 @@ def run_once(mode: str, algo: str, timeout_s: int, seed: int, num_tests: int, ma
 
     def _learn():
         # IMPORTANT: use eq.equivalence_oracle (function), not module
-        # Also: keep your equivalence.py unchanged; we only patch membership_oracle used inside it.
         if algo == "L*":
             learner = LStar(ALPHABET, membership_oracle, eq.equivalence_oracle)
         elif algo == "TTT":
@@ -244,9 +239,9 @@ def plot_pdf(path: str, results: list[RunResult], trials: int):
     plt.close(fig)
 
 
-# -------------------------------
+
 # Main
-# -------------------------------
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--trials", type=int, default=10)
@@ -263,8 +258,7 @@ def main():
 
     results: list[RunResult] = []
 
-    # NOTE: your equivalence.py sets random.seed(0) globally, and uses its own templates + random.
-    # We'll still vary seed only for our own reproducibility if you later extend eq.py.
+
     base_seed = args.seed
 
     for mode in ["complex", "medium", "simple"]:
